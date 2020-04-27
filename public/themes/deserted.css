@@ -1,0 +1,24 @@
+/*
+ * name: Deserted
+ */
+:root {
+  --body-bg: #f9f3e2;
+  --link-color: #463c36;
+  --error-color: #642121;
+  --success-color: #416054;
+  --focus-outline: 0 0 1px 2px rgba(243,218,218,0.3);
+  --highlight-color: #e8e1cc;
+  --button-bg: #62534a;
+  --sidebar-left-bg: #eee8d5;
+  --sidebar-left-border: 1px solid #d5d2d0;
+  --sidebar-left-frozen-color: #77675c;
+  --sidebar-left-text: #59473a;
+  --sidebar-left-border-bottom: #887d76;
+  --sidebar-left-search-placeholder-color: #604d41;
+  --sidebar-left-search-focus-bg: #d5cbaf;
+}
+
+.welcome-screen {
+  background: rgb(238,232,213);
+  background: radial-gradient(circle, rgba(238,232,213,1) 50%, rgba(182,174,152,1) 100%);
+}
