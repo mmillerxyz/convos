@@ -21,6 +21,8 @@ const MONTH_ABBR = {
 
 const ONE_DAY = 60 * 60 * 24;
 
+export const isISOTimeString = str => !!String(str || '').match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+
 export default class Time extends Date {
   constructor(params) {
     if (typeof params == 'string' && !params.match(/Z$/)) params += 'Z';
