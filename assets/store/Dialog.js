@@ -125,21 +125,8 @@ export default class Dialog extends Reactive {
     if (maybe && this.is('success')) return this;
     if (maybe == 'after') delete this.participantsLoaded;
 
-    // params = {after, before, limit}
-    const opParams = {...params, connection_id: this.connection_id, dialog_id: this.dialog_id};
-
-    // Try to load as much as possible into the future
-    if (opParams.after == 'maybe' && !opParams.limit) opParams.limit = 200;
-
-    // Normalize "after" and "before"
-    ['after', 'before'].forEach(k => {
-      if (opParams[k] == 'maybe') opParams[k] = this._realMessage(k == 'before' ? 0 : -1);
-      if (typeof opParams[k] == 'number') opParams[k] = this._realMessage(opParams[k]);
-      if (isType(opParams[k], 'object')) opParams[k] = opParams[k].ts.toISOString();
-      if (isType(opParams[k], 'undef')) return delete opParams[k];
-    });
-
     // All of the history is loaded
+    const opParams = this._loadOpParams(params);
     const hasMessages = this.messages.length;
     if (hasMessages && opParams.before && this.startOfHistory) return;
 
@@ -277,6 +264,24 @@ export default class Dialog extends Reactive {
 
   _calculateFrozen() {
     return '';
+  }
+
+  _loadOpParams(params) {
+    const opParams = {connection_id: this.connection_id, dialog_id: this.dialog_id};
+
+    // Try to load as much as possible into the future
+    opParams.limit = params.after == 'maybe' && !params.limit ? 200 : (params.limit || 60);
+
+    // Normalize "after" and "before"
+    ['after', 'before'].forEach(k => {
+      if (params.hasOwnProperty(k)) opParams[k] = params[k];
+      if (opParams[k] == 'maybe') opParams[k] = this._realMessage(k == 'before' ? 0 : -1);
+      if (typeof opParams[k] == 'number') opParams[k] = this._realMessage(opParams[k]);
+      if (isType(opParams[k], 'object')) opParams[k] = opParams[k].ts.toISOString();
+      if (isType(opParams[k], 'undef')) return delete opParams[k];
+    });
+
+    return opParams;
   }
 
   _loadParticipants() {
